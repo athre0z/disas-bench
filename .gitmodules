@@ -1,0 +1,12 @@
+[submodule "distorm"]
+	path = distorm
+	url = https://github.com/gdabah/distorm.git
+[submodule "zydis"]
+	path = zydis
+	url = https://github.com/zyantific/zydis.git
+[submodule "intelxed"]
+	path = intelxed
+	url = https://github.com/intelxed/xed.git
+[submodule "capstone"]
+	path = capstone
+	url = https://github.com/aquynh/capstone.git
