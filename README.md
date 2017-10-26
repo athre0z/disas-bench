@@ -23,7 +23,7 @@ macOS 10.13, Apple Clang 900, i7-6850k
 | --------- | ------------ |
 | `-no-fmt` | Decoding only |
 | `-fmt`    | Decoding + formatting |
-| `-min`/`-full` | Zydis specific: `ZYDIS_DECODE_GRANULARITY_(MINIMAL|FULL)` argument |
+| `-min`/`-full` | Zydis specific: `ZYDIS_DECODE_GRANULARITY_(MINIMAL/FULL)` argument |
 
 Decoding: Parsing the raw instruction bytes into a machine processable structure
 
