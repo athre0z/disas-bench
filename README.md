@@ -10,8 +10,11 @@ macOS 10.13, Apple Clang 900, i7-6850k
 ## Candidates
 
 [Capstone](https://github.com/aquynh/capstone)
+
 [DiStorm](https://github.com/gdabah/distorm)
+
 [Intel XED](https://github.com/intelxed/xed)
+
 [Zydis](https://github.com/zyantific/zydis)
 
 ## Suffixes
@@ -23,6 +26,7 @@ macOS 10.13, Apple Clang 900, i7-6850k
 | `-min`/`-full` | Zydis specific: `ZYDIS_DECODE_GRANULARITY_(MINIMAL|FULL)` argument |
 
 Decoding: Parsing the raw instruction bytes into a machine processable structure
+
 Formatting: Translating the structure to human readable assembly
 
 ## Benchmarking
