@@ -4,6 +4,9 @@ Disassembler Benchmark
 This repository holds benchmarking code for various x86/x86-64  disassembler libraries.
 
 ## Results
+![Bench](https://i.imgur.com/PumBJjJ.png)
+macOS 10.13, GCC 7, i7-6850k
+
 ![Bench](https://i.imgur.com/gCUzomq.png)
 macOS 10.13, Apple Clang 900, i7-6850k
 

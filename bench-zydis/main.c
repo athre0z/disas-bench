@@ -24,14 +24,19 @@ int main()
     }
 
     ZydisDecoder decoder;
-    ZydisDecoderInitEx(
-        &decoder, ZYDIS_MACHINE_MODE_LONG_64, ZYDIS_ADDRESS_WIDTH_64,
+    ZydisDecoderInit(
+        &decoder, 
+        ZYDIS_MACHINE_MODE_LONG_64, 
+        ZYDIS_ADDRESS_WIDTH_64
+    );
+
 #ifdef DISAS_BENCH_DECODE_MINIMAL
-        ZYDIS_DECODE_GRANULARITY_MINIMAL
-#else
-        ZYDIS_DECODE_GRANULARITY_FULL
+    ZydisDecoderEnableMode(
+        &decoder,
+        ZYDIS_DECODER_MODE_MINIMAL,
+        ZYDIS_TRUE
+    );
 #endif
-        );
 
     size_t num_valid_insns = 0;
     size_t num_bad_insn = 0;
