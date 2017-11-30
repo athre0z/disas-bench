@@ -1,4 +1,4 @@
-#include "../shared/load_bin.inc"
+#include "../load_bin.inc"
 #include <xed-interface.h>
 
 

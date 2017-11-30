@@ -5,14 +5,14 @@ import time
 import os
 
 targets = [
-    'bench-cs/bench-cs-fmt',
-    'bench-zydis/bench-zydis-min-no-fmt',
-    'bench-zydis/bench-zydis-full-no-fmt',
-    'bench-zydis/bench-zydis-full-fmt',
-    'bench-xed/bench-xed-fmt',
-    'bench-xed/bench-xed-no-fmt',
-    'bench-distorm/bench-distorm-fmt',
-    'bench-distorm/bench-distorm-no-fmt',
+    'bench/cs/bench-cs-fmt',
+    'bench/zydis/bench-zydis-min-no-fmt',
+    'bench/zydis/bench-zydis-full-no-fmt',
+    'bench/zydis/bench-zydis-full-fmt',
+    'bench/xed/bench-xed-fmt',
+    'bench/xed/bench-xed-no-fmt',
+    'bench/distorm/bench-distorm-fmt',
+    'bench/distorm/bench-distorm-no-fmt',
 ]
 timings = []
 

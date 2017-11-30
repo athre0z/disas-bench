@@ -9,7 +9,7 @@
 
 int read_xul_dll(uint8_t** buf, size_t* len)
 {
-    FILE* f = fopen("../input/xul.dll", "rb");
+    FILE* f = fopen("../../input/xul.dll", "rb");
     if (!f) return 0;
 
     // Seek to code section

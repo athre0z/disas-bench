@@ -1,12 +1,12 @@
 [submodule "distorm"]
-	path = distorm
+	path = libs/distorm
 	url = https://github.com/gdabah/distorm.git
 [submodule "zydis"]
-	path = zydis
+	path = libs/zydis
 	url = https://github.com/zyantific/zydis.git
 [submodule "intelxed"]
-	path = intelxed
+	path = libs/intelxed
 	url = https://github.com/intelxed/xed.git
 [submodule "capstone"]
-	path = capstone
+	path = libs/capstone
 	url = https://github.com/aquynh/capstone.git

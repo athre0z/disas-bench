@@ -7,7 +7,7 @@ set(ZYDIS_FEATURE_IMPLICITLY_USED_REGISTERS OFF CACHE BOOL "")
 set(ZYDIS_BUILD_SHARED_LIBS ON CACHE BOOL "")
 set(ZYDIS_BUILD_EXAMPLES OFF CACHE BOOL "")
 set(ZYDIS_BUILD_TOOLS OFF CACHE BOOL "")
-add_subdirectory("../zydis" "zydis")
+add_subdirectory("../../libs/zydis" "zydis")
 
 add_executable("bench-zydis-full-fmt" "main.c")
 target_link_libraries("bench-zydis-full-fmt" "Zydis")

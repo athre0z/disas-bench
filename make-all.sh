@@ -12,17 +12,17 @@ fi
 # Build Capstone
 
 echo "[*] Building Capstone ..."
-cd capstone
+cd libs/capstone
 export CAPSTONE_ARCHS="x86"
 make -j12  || exit 1
-cd ..
+cd ../..
 
 # Build Intel XED
 
 echo "[*] Building Intel XED ..."
-cd intelxed
+cd libs/intelxed
 python mfile.py --opt=3
-cd ..
+cd ../..
 
 # Build DiStorm
 
@@ -34,33 +34,33 @@ else
     distorm_subdir=linux
     distorm_bin=libdistorm3.so
 fi
-cd distorm/make/${distorm_subdir}
+cd libs/distorm/make/${distorm_subdir}
 make || exit 1
-cp ${distorm_bin} ../../../bench-distorm/
-cd ../../..
+cp ${distorm_bin} ../../../../bench-distorm/
+cd ../../../..
 
 # Build benchmark tools
 
 echo "[*] Building Capstone benchmark ..."
-cd bench-cs
+cd bench/cs
 make || exit 1
-cd ..
+cd ../..
 
 echo "[*] Building Zydis benchmark ..."
-cd bench-zydis
+cd bench/zydis
 cmake -DCMAKE_BUILD_TYPE=Release . || exit 1
 make || exit 1
-cd ..
+cd ../..
 
 echo "[*] Building Intel XED benchmark ..."
-cd bench-xed
+cd bench/xed
 make || exit 1
-cd ..
+cd ../..
 
 echo "[*] Building DiStorm benchmark ..."
-cd bench-distorm
+cd bench/distorm
 make || exit 1
-cd ..
+cd ../..
 
 echo "[+] All done!"
 
