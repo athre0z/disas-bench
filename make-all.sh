@@ -36,7 +36,8 @@ else
 fi
 cd libs/distorm/make/${distorm_subdir}
 make || exit 1
-cp ${distorm_bin} ../../../../bench-distorm/
+echo $(pwd)
+cp ${distorm_bin} ../../../../bench/distorm/
 cd ../../../..
 
 # Build benchmark tools
