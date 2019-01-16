@@ -1,8 +1,8 @@
 #include "../load_bin.inc"
-#include <capstone.h>
+#include <capstone/capstone.h>
 
 
-int main() 
+int main()
 {
     csh handle = 0;
     cs_insn *insn = NULL;
@@ -16,7 +16,7 @@ int main()
     size_t num_bad_insn = 0;
     size_t round;
 
-    if (cs_open(CS_ARCH_X86, CS_MODE_64, &handle) != CS_ERR_OK) 
+    if (cs_open(CS_ARCH_X86, CS_MODE_64, &handle) != CS_ERR_OK)
     {
         fputs("Unable to create Capstone handle\n", stderr);
         ret = 1;
@@ -45,10 +45,10 @@ int main()
         while (xul_code_len_iter > 0)
         {
             if (!cs_disasm_iter(
-                handle, 
-                &xul_code_iter, 
-                &xul_code_len_iter, 
-                &ip, 
+                handle,
+                &xul_code_iter,
+                &xul_code_len_iter,
+                &ip,
                 insn
             ))
             {
@@ -62,14 +62,14 @@ int main()
             }
         }
     }
-    
+
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad)\n", 
+        "Disassembled %zu instructions (%zu valid, %zu bad)\n",
         num_valid_insns + num_bad_insn,
         num_valid_insns,
         num_bad_insn
     );
-    
+
 leave:
     if (insn) cs_free(insn, 1);
     if (handle) cs_close(&handle);

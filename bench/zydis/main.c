@@ -5,8 +5,8 @@ int main()
 {
 #ifndef DISAS_BENCH_NO_FORMAT
     ZydisFormatter formatter;
-    if (!ZYDIS_SUCCESS(ZydisFormatterInit(
-        &formatter, 
+    if (!ZYAN_SUCCESS(ZydisFormatterInit(
+        &formatter,
         ZYDIS_FORMATTER_STYLE_INTEL
     )))
     {
@@ -14,7 +14,7 @@ int main()
         return 1;
     }
 #endif
-    
+
     uint8_t *xul_code = NULL;
     size_t xul_code_len = 0;
     if (!read_xul_dll(&xul_code, &xul_code_len))
@@ -25,8 +25,8 @@ int main()
 
     ZydisDecoder decoder;
     ZydisDecoderInit(
-        &decoder, 
-        ZYDIS_MACHINE_MODE_LONG_64, 
+        &decoder,
+        ZYDIS_MACHINE_MODE_LONG_64,
         ZYDIS_ADDRESS_WIDTH_64
     );
 
@@ -34,7 +34,7 @@ int main()
     ZydisDecoderEnableMode(
         &decoder,
         ZYDIS_DECODER_MODE_MINIMAL,
-        ZYDIS_TRUE
+        ZYAN_TRUE
     );
 #endif
 
@@ -45,17 +45,16 @@ int main()
     {
         read_offs = 0;
 
-        ZydisStatus status;
+        ZyanStatus status;
         ZydisDecodedInstruction info;
         while ((status = ZydisDecoderDecodeBuffer(
-            &decoder, 
-            xul_code + read_offs, 
-            xul_code_len - read_offs, 
-            read_offs, 
+            &decoder,
+            xul_code + read_offs,
+            xul_code_len - read_offs,
             &info
         )) != ZYDIS_STATUS_NO_MORE_DATA)
         {
-            if (!ZYDIS_SUCCESS(status))
+            if (!ZYAN_SUCCESS(status))
             {
                 ++read_offs;
                 ++num_bad_insn;
@@ -65,7 +64,7 @@ int main()
 #ifndef DISAS_BENCH_NO_FORMAT
             char printBuffer[256];
             ZydisFormatterFormatInstruction(
-                &formatter, &info, printBuffer, sizeof(printBuffer)
+                &formatter, &info, printBuffer, sizeof(printBuffer), read_offs
             );
 #endif
 
@@ -75,7 +74,7 @@ int main()
     }
 
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad)\n", 
+        "Disassembled %zu instructions (%zu valid, %zu bad)\n",
         num_valid_insns + num_bad_insn,
         num_valid_insns,
         num_bad_insn
