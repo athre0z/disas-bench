@@ -21,23 +21,23 @@ cd ../..
 
 echo "[*] Building Intel XED ..."
 cd libs/intelxed
+export PYTHONPATH=./libs
 python mfile.py --opt=3
 cd ../..
 
 # Build DiStorm
 
 echo "[*] Building DiStorm ..."
+
 if [[ `uname -s` == "Darwin" ]]; then 
-    distorm_subdir=mac
-    distorm_bin=libdistorm3.dylib
+    cd libs/distorm/make/mac
 else
-    distorm_subdir=linux
-    distorm_bin=libdistorm3.so
+    cd libs/distorm/make/linux
 fi
-cd libs/distorm/make/${distorm_subdir}
+
 make || exit 1
 echo $(pwd)
-cp ${distorm_bin} ../../../../bench/distorm/
+
 cd ../../../..
 
 # Build benchmark tools

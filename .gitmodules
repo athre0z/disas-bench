@@ -10,3 +10,6 @@
 [submodule "capstone"]
 	path = libs/capstone
 	url = https://github.com/aquynh/capstone.git
+[submodule "libs/mbuild"]
+	path = libs/mbuild
+	url = https://github.com/intelxed/mbuild.git
