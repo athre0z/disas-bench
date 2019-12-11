@@ -35,7 +35,7 @@ else
     cd libs/distorm/make/linux
 fi
 
-make || exit 1
+DISTORM_MODE=DISTORM_STATIC make || exit 1
 echo $(pwd)
 
 cd ../../../..
