@@ -85,5 +85,10 @@ cd bench/bddisasm
 make || exit 1
 cd ../..
 
+echo "[*] Building yaxpeax-x86 benchmark ..."
+cd bench/yaxpeax
+make || exit 1
+cd ../..
+
 echo "[+] All done!"
 

@@ -17,6 +17,8 @@ targets = [
     'bench/iced-x86/bench-iced-no-fmt',
     'bench/bddisasm/bench-bddisasm-fmt',
     'bench/bddisasm/bench-bddisasm-no-fmt',
+    'bench/yaxpeax/bench-yaxpeax-fmt',
+    'bench/yaxpeax/bench-yaxpeax-no-fmt',
 ]
 timings = []
 

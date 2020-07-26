@@ -1,0 +1,18 @@
+[package]
+name = "yaxpeax-bench"
+version = "0.0.0"
+authors = ["iximeow <me@iximeow.net>"]
+description = "benchmarking wrapper for yaxpeax-x86, for use in disas-bench"
+edition = "2018"
+
+[[bin]]
+name = "yaxpeax-bench"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+
+[dependencies]
+yaxpeax-x86 = { path = "../../libs/yaxpeax", version = "*" }
+yaxpeax-arch = "*"

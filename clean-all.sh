@@ -11,6 +11,7 @@
 (cd bench/distorm; make clean)
 (cd bench/iced-x86; make clean)
 (cd bench/bddisasm; make clean)
+(cd bench/yaxpeax; make clean)
 rm bench/distorm/libdistorm*
 
 rm libs/distorm/make/mac/libdistorm*
