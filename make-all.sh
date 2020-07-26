@@ -45,6 +45,13 @@ if ! [[ `uname -s` == "Darwin" ]]; then
     cd ../..
 fi
 
+# Build bddisasm
+
+echo "[*] Building bddisasm ..."
+cd libs/bddisasm
+make
+cd ../..
+
 # Build benchmark tools
 
 echo "[*] Building Capstone benchmark ..."
@@ -70,6 +77,11 @@ cd ../..
 
 echo "[*] Building iced-x86 benchmark ..."
 cd bench/iced-x86
+make || exit 1
+cd ../..
+
+echo "[*] Building bddisasm benchmark ..."
+cd bench/bddisasm
 make || exit 1
 cd ../..
 
