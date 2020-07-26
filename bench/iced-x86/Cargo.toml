@@ -1,0 +1,17 @@
+[package]
+name = "iced-bench"
+version = "0.0.0"
+authors = ["iximeow <me@iximeow.net>"]
+description = "benchmarking wrapper for iced-x86, for use in disas-bench"
+edition = "2018"
+
+[[bin]]
+name = "iced-bench"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+
+[dependencies]
+iced-x86 = "1.8.0"

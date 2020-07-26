@@ -68,5 +68,10 @@ cd bench/distorm
 make || exit 1
 cd ../..
 
+echo "[*] Building iced-x86 benchmark ..."
+cd bench/iced-x86
+make || exit 1
+cd ../..
+
 echo "[+] All done!"
 

@@ -8,6 +8,7 @@
 (cd bench/zydis; rm -rf zydis cmake Makefile CMakeCache.txt CMakeFiles cmake_install.cmake bench-zydis*)
 (cd bench/xed; make clean)
 (cd bench/distorm; make clean)
+(cd bench/iced-x86; make clean)
 rm bench/distorm/libdistorm*
 
 rm libs/distorm/make/mac/libdistorm*
