@@ -32,13 +32,18 @@ if [[ `uname -s` == "Darwin" ]]; then
     distorm_bin=libdistorm3.dylib
 else
     distorm_subdir=linux
-    distorm_bin=libdistorm3.so
+    distorm_bin=libdistorm3.so.3.4.0
 fi
 cd libs/distorm/make/${distorm_subdir}
 make || exit 1
 echo $(pwd)
 cp ${distorm_bin} ../../../../bench/distorm/
 cd ../../../..
+if ! [[ `uname -s` == "Darwin" ]]; then
+    cd bench/distorm/
+    ln -s libdistorm3.so.3.4.0 libdistorm3.so.3
+    cd ../..
+fi
 
 # Build benchmark tools
 
