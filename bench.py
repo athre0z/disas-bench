@@ -13,6 +13,12 @@ targets = [
     'bench/xed/bench-xed-no-fmt',
     'bench/distorm/bench-distorm-fmt',
     'bench/distorm/bench-distorm-no-fmt',
+    'bench/iced-x86/bench-iced-fmt',
+    'bench/iced-x86/bench-iced-no-fmt',
+    'bench/bddisasm/bench-bddisasm-fmt',
+    'bench/bddisasm/bench-bddisasm-no-fmt',
+    'bench/yaxpeax/bench-yaxpeax-fmt',
+    'bench/yaxpeax/bench-yaxpeax-no-fmt',
 ]
 timings = []
 

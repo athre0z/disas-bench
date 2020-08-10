@@ -1,9 +1,12 @@
 Disassembler Benchmark
 ======================
 
-This repository holds benchmarking code for various x86/x86-64  disassembler libraries.
+This repository holds benchmarking code for various x86/x86-64 disassembler libraries.
 
 ## Results
+![linux bench on i7-3960x](bench.png)
+linux 4.15.0, GCC 7.5, Rust 1.45, i7-3960x
+
 ![Bench](https://i.imgur.com/PumBJjJ.png)
 macOS 10.13, GCC 7, i7-6850k
 
@@ -19,6 +22,12 @@ macOS 10.13, Apple Clang 900, i7-6850k
 [Intel XED](https://github.com/intelxed/xed)
 
 [Zydis](https://github.com/zyantific/zydis)
+
+[iced](https://github.com/0xd4d/iced)
+
+[bddisasm](https://github.com/bitdefender/bddisasm)
+
+[yaxpeax-x86](https://github.com/iximeow/yaxpeax-x86)
 
 ## Suffixes
 

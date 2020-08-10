@@ -32,13 +32,25 @@ if [[ `uname -s` == "Darwin" ]]; then
     distorm_bin=libdistorm3.dylib
 else
     distorm_subdir=linux
-    distorm_bin=libdistorm3.so
+    distorm_bin=libdistorm3.so.3.4.0
 fi
 cd libs/distorm/make/${distorm_subdir}
 make || exit 1
 echo $(pwd)
 cp ${distorm_bin} ../../../../bench/distorm/
 cd ../../../..
+if ! [[ `uname -s` == "Darwin" ]]; then
+    cd bench/distorm/
+    ln -s libdistorm3.so.3.4.0 libdistorm3.so.3
+    cd ../..
+fi
+
+# Build bddisasm
+
+echo "[*] Building bddisasm ..."
+cd libs/bddisasm
+make
+cd ../..
 
 # Build benchmark tools
 
@@ -60,6 +72,21 @@ cd ../..
 
 echo "[*] Building DiStorm benchmark ..."
 cd bench/distorm
+make || exit 1
+cd ../..
+
+echo "[*] Building iced-x86 benchmark ..."
+cd bench/iced-x86
+make || exit 1
+cd ../..
+
+echo "[*] Building bddisasm benchmark ..."
+cd bench/bddisasm
+make || exit 1
+cd ../..
+
+echo "[*] Building yaxpeax-x86 benchmark ..."
+cd bench/yaxpeax
 make || exit 1
 cd ../..
 
