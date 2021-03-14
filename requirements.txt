@@ -1,1 +1,2 @@
-matplotlib==2.1.0
+wheel
+matplotlib==3.3.4
