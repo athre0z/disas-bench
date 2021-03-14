@@ -1,7 +1,7 @@
 make-bench-iced-x86:
-	cargo build --release
+	cargo build --release --features formatter
 	cp target/release/iced-bench bench-iced-fmt
-	RUSTFLAGS="--cfg DISAS_BENCH_NO_FORMAT" cargo build --release
+	cargo build --release --features decoder
 	cp target/release/iced-bench bench-iced-no-fmt
 
 clean:

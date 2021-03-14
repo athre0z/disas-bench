@@ -1,7 +1,7 @@
 make-bench-yaxpeax:
-	cargo build --release
+	cargo build --release --features formatter
 	cp target/release/yaxpeax-bench bench-yaxpeax-fmt
-	RUSTFLAGS="--cfg DISAS_BENCH_NO_FORMAT" cargo build --release
+	cargo build --release --features decoder
 	cp target/release/yaxpeax-bench bench-yaxpeax-no-fmt
 
 clean:

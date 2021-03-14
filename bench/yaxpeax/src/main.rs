@@ -3,9 +3,9 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::SeekFrom;
 
-use yaxpeax_x86::long_mode::Arch;
-use yaxpeax_x86::{long_mode as amd64};
 use yaxpeax_arch::{Decoder, LengthedInstruction};
+use yaxpeax_x86::long_mode as amd64;
+use yaxpeax_x86::long_mode::Arch;
 
 // translated from `load_bin.inc`
 
@@ -31,22 +31,27 @@ pub fn main() {
 
     let decoder = <Arch as yaxpeax_arch::Arch>::Decoder::default();
 
-    #[cfg(not(DISAS_BENCH_NO_FORMAT))]
+    #[cfg(feature = "formatter")]
     let mut text = String::new();
 
     let mut instruction = amd64::Instruction::default();
 
     let mut num_valid_insns: usize = 0;
     let mut num_bad_insns: usize = 0;
-    for _round in 0..20 {
+    for _ in 0..20 {
         let mut offset = 0u64;
         while offset < XUL_TEXT_LEN as u64 {
-            match decoder.decode_into(&mut instruction, xul_code[(offset as usize)..].iter().cloned()) {
+            match decoder.decode_into(
+                &mut instruction,
+                xul_code[(offset as usize)..].iter().cloned(),
+            ) {
                 Ok(()) => {
-                    #[cfg(not(DISAS_BENCH_NO_FORMAT))]
+                    #[cfg(feature = "formatter")]
                     {
                         text.clear();
-                        instruction.write_to(&mut text).expect("can format successfully");
+                        instruction
+                            .write_to(&mut text)
+                            .expect("can format successfully");
                     }
 
                     num_valid_insns += 1;
@@ -61,7 +66,8 @@ pub fn main() {
         }
     }
 
-    println!("Disassembled {} instructions ({} valid, {} bad)",
+    println!(
+        "Disassembled {} instructions ({} valid, {} bad)",
         num_valid_insns + num_bad_insns,
         num_valid_insns,
         num_bad_insns,

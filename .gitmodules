@@ -16,3 +16,6 @@
 [submodule "libs/bddisasm"]
 	path = libs/bddisasm
 	url = https://github.com/bitdefender/bddisasm
+[submodule "libs/mbuild"]
+	path = libs/mbuild
+	url = https://github.com/intelxed/mbuild.git

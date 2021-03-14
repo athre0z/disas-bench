@@ -10,8 +10,14 @@ name = "iced-bench"
 path = "src/main.rs"
 
 [profile.release]
+codegen-units = 1
 opt-level = 3
 lto = true
 
-[dependencies]
-iced-x86 = "1.8.0"
+[features]
+decoder = ["iced-x86/std", "iced-x86/decoder"]
+formatter = ["iced-x86/std", "iced-x86/decoder", "iced-x86/fast_fmt"]
+
+[dependencies.iced-x86]
+git = "https://github.com/icedland/iced"
+default-features = false

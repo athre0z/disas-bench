@@ -1,12 +1,22 @@
+use iced_x86::{Decoder, DecoderOptions, Instruction};
+#[cfg(feature = "formatter")]
+use iced_x86::{SpecializedFormatter, SpecializedFormatterTraitOptions};
 use std::fs::File;
 use std::io::Read;
 use std::io::Seek;
 use std::io::SeekFrom;
 
-use iced_x86::{Decoder, DecoderError, DecoderOptions, Instruction};
-
-#[cfg(not(DISAS_BENCH_NO_FORMAT))]
-use iced_x86::{Formatter, NasmFormatter};
+#[cfg(feature = "formatter")]
+struct TraitOptions;
+#[cfg(feature = "formatter")]
+impl SpecializedFormatterTraitOptions for TraitOptions {
+    const ENABLE_DB_DW_DD_DQ: bool = false;
+    unsafe fn verify_output_has_enough_bytes_left() -> bool {
+        false
+    }
+}
+#[cfg(feature = "formatter")]
+type Formatter = SpecializedFormatter<TraitOptions>;
 
 // translated from `load_bin.inc`
 
@@ -30,29 +40,25 @@ pub fn main() {
         }
     };
 
-    let mut decoder = Decoder::new(
-        64, // 64-bit
-        &xul_code,
-        DecoderOptions::NONE
-    );
+    let mut decoder = Decoder::new(64, &xul_code, DecoderOptions::NONE);
 
-    #[cfg(not(DISAS_BENCH_NO_FORMAT))]
+    #[cfg(feature = "formatter")]
     let mut text = String::new();
-    #[cfg(not(DISAS_BENCH_NO_FORMAT))]
-    let mut formatter = NasmFormatter::new();
+    #[cfg(feature = "formatter")]
+    let mut formatter = Formatter::new();
 
     let mut instruction = Instruction::default();
 
     let mut num_valid_insns: usize = 0;
     let mut num_bad_insns: usize = 0;
-    for _round in 0..20 {
-        decoder.set_position(0);
+    for _ in 0..20 {
+        decoder.try_set_position(0).unwrap();
+        decoder.set_ip(0);
         while decoder.can_decode() {
-            let offset = decoder.position();
             decoder.decode_out(&mut instruction);
 
-            if decoder.last_error() == DecoderError::None {
-                #[cfg(not(DISAS_BENCH_NO_FORMAT))]
+            if !instruction.is_invalid() {
+                #[cfg(feature = "formatter")]
                 {
                     text.clear();
                     formatter.format(&instruction, &mut text);
@@ -63,7 +69,9 @@ pub fn main() {
             } else {
                 num_bad_insns += 1;
                 // manually seek forward one byte to try again
-                decoder.set_position(offset + 1);
+                decoder
+                    .try_set_position(decoder.position() - instruction.len() + 1)
+                    .unwrap();
             }
         }
     }
