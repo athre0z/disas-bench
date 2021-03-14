@@ -4,8 +4,8 @@ Disassembler Benchmark
 This repository holds benchmarking code for various x86/x86-64 disassembler libraries.
 
 ## Results
-![linux bench on i7-3960x](bench.png)
-linux 4.15.0, GCC 7.5, Rust 1.45, i7-3960x
+![Bench](bench.png)
+linux 5.4.72 (WSL2), GCC 8.4.0, Rust 1.50.0, i5-6600K
 
 ![Bench](https://i.imgur.com/PumBJjJ.png)
 macOS 10.13, GCC 7, i7-6850k
@@ -63,7 +63,7 @@ python3 -mvenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 # Optional args: <code-offset> <code-len> <filename> [loop-count]
-# Linux: LD_LIBRARY_PATH is needed
+# macOS/Windows: python bench.py
 LD_LIBRARY_PATH=$(pwd)/bench/distorm python bench.py
 ```
 
