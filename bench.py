@@ -4,6 +4,9 @@ import numpy as np
 import time
 import os
 
+file_code_len = 0x2460400
+code_loop_count = 20
+
 targets = [
     'bench/cs/bench-cs-fmt',
     'bench/zydis/bench-zydis-min-no-fmt',
@@ -46,7 +49,8 @@ for cur_target in targets:
 
 print('[*] Generating chart')
 
-mbs = [(38 * 20 / x) for x in timings]
+code_len_mb = file_code_len / 1024 / 1024
+mbs = [(code_len_mb * code_loop_count / x) for x in timings]
 plt.rcdefaults()
 fig = plt.figure(figsize=(10, 5))
 ax = fig.add_subplot(1, 1, 1)
