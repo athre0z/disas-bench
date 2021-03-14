@@ -10,9 +10,14 @@ name = "yaxpeax-bench"
 path = "src/main.rs"
 
 [profile.release]
+codegen-units = 1
 opt-level = 3
 lto = true
 
+[features]
+decoder = []
+formatter = []
+
 [dependencies]
-yaxpeax-x86 = { path = "../../libs/yaxpeax", version = "*" }
-yaxpeax-arch = "*"
+yaxpeax-x86 = { path = "../../libs/yaxpeax", version = "*", default-features = false, features = ["std"] }
+yaxpeax-arch = { version = "*", default-features = false }

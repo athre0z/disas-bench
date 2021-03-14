@@ -23,7 +23,7 @@ macOS 10.13, Apple Clang 900, i7-6850k
 
 [Zydis](https://github.com/zyantific/zydis)
 
-[iced](https://github.com/0xd4d/iced)
+[iced](https://github.com/icedland/iced)
 
 [bddisasm](https://github.com/bitdefender/bddisasm)
 
