@@ -2,15 +2,13 @@
 #include <capstone/capstone.h>
 
 
-int main()
+int main(int argc, char* argv[])
 {
     csh handle = 0;
     cs_insn *insn = NULL;
     int ret = 0;
-    uint8_t *xul_code = NULL;
-    const uint8_t *xul_code_iter = NULL;
-    size_t xul_code_len = 0;
-    size_t xul_code_len_iter = 0;
+    const uint8_t *code_iter = NULL;
+    size_t code_len_iter = 0;
     uint64_t ip = 0;
     size_t num_valid_insns = 0;
     size_t num_bad_insn = 0;
@@ -23,9 +21,10 @@ int main()
         goto leave;
     }
 
-    if (!read_xul_dll(&xul_code, &xul_code_len))
+    uint8_t *code = NULL;
+    size_t code_len = 0, loop_count = 0;
+    if (!read_file(argc, argv, &code, &code_len, &loop_count))
     {
-        fputs("Can't read xul.dll\n", stderr);
         ret = 1;
         goto leave;
     }
@@ -38,22 +37,23 @@ int main()
         goto leave;
     }
 
-    for (round = 0; round < 20; ++round)
+    clock_t start_time = clock();
+    for (round = 0; round < loop_count; ++round)
     {
-        xul_code_iter = xul_code;
-        xul_code_len_iter = xul_code_len;
-        while (xul_code_len_iter > 0)
+        code_iter = code;
+        code_len_iter = code_len;
+        while (code_len_iter > 0)
         {
             if (!cs_disasm_iter(
                 handle,
-                &xul_code_iter,
-                &xul_code_len_iter,
+                &code_iter,
+                &code_len_iter,
                 &ip,
                 insn
             ))
             {
-                ++xul_code_iter;
-                --xul_code_len_iter;
+                ++code_iter;
+                --code_len_iter;
                 ++num_bad_insn;
             }
             else
@@ -62,17 +62,19 @@ int main()
             }
         }
     }
+    clock_t end_time = clock();
 
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad)\n",
+        "Disassembled %zu instructions (%zu valid, %zu bad), %.2f ms\n", 
         num_valid_insns + num_bad_insn,
         num_valid_insns,
-        num_bad_insn
+        num_bad_insn,
+        (double)(end_time - start_time) * 1000.0 / CLOCKS_PER_SEC
     );
 
 leave:
     if (insn) cs_free(insn, 1);
     if (handle) cs_close(&handle);
-    if (xul_code) free(xul_code);
+    if (code) free(code);
     return ret;
 }

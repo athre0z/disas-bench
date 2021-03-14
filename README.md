@@ -44,12 +44,22 @@ Formatting: Translating the structure to human readable assembly
 ## Benchmarking
 ```bash
 git clone --recursive 'https://github.com/athre0z/disas-bench.git'
+cd disas-bench.git
 ./make-all.sh
 python3 -mvenv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python bench.py
+# Optional args: <code-offset> <code-len> <filename> [loop-count]
+# Linux: LD_LIBRARY_PATH is needed
+LD_LIBRARY_PATH=$(pwd)/bench/distorm python bench.py
 ```
+
+The optional `bench.py` arguments are:
+
+- `<code-offset>` = offset of the code section (in decimal or 0x hex)
+- `<code-len>` = length of the code section (in decimal or 0x hex)
+- `<filename>` = binary file to decode and format
+- `[loop-count]` = optional loop count. Total number of bytes decoded and formatted is `<code-len> * [loop-count]`
 
 ## Contributing
 If you feel like the benchmark for a lib doesn't drive it to its full potential or treats it unfairly, I'd be happy to accept PRs with improvements!

@@ -1,24 +1,24 @@
 #include "../load_bin.inc"
 #include <distorm.h>
 
-int main()
+int main(int argc, char* argv[])
 {
-    uint8_t *xul_code = NULL;
-    size_t xul_code_len = 0;
-    if (!read_xul_dll(&xul_code, &xul_code_len))
+    uint8_t *code = NULL;
+    size_t code_len = 0, loop_count = 0;
+    if (!read_file(argc, argv, &code, &code_len, &loop_count))
     {
-        fputs("Can't read xul.dll\n", stderr);
         return 1;
     }
 
     size_t num_valid_insns = 0;
     size_t num_bad_insn = 0;
-    for (int i = 0; i < 20; ++i)
+    clock_t start_time = clock();
+    for (int i = 0; i < loop_count; ++i)
     {
         _CodeInfo ci = {
             .codeOffset = 0,
-            .code = xul_code,
-            .codeLen = xul_code_len,
+            .code = code,
+            .codeLen = code_len,
             .dt = Decode64Bits,
             .features = 0
         };
@@ -81,14 +81,16 @@ int main()
 
         next:;
     }
+    clock_t end_time = clock();
 
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad)\n", 
+        "Disassembled %zu instructions (%zu valid, %zu bad), %.2f ms\n", 
         num_valid_insns + num_bad_insn,
         num_valid_insns,
-        num_bad_insn
+        num_bad_insn,
+        (double)(end_time - start_time) * 1000.0 / CLOCKS_PER_SEC
     );
 
-    free(xul_code);
+    free(code);
     return 0;
 }

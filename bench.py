@@ -3,9 +3,45 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import os
+import sys
+import re
 
+root_dir = os.path.dirname(os.path.realpath(__file__))
+
+code_filename = os.path.join(root_dir, 'input', 'xul.dll')
+file_code_offs = 0x400
 file_code_len = 0x2460400
 code_loop_count = 20
+
+if len(sys.argv) == 1:
+    pass
+elif len(sys.argv) == 4 or len(sys.argv) == 5:
+    file_code_offs = int(sys.argv[1])
+    file_code_len = int(sys.argv[2])
+    code_filename = sys.argv[3]
+    if len(sys.argv) >= 5:
+        code_loop_count = int(sys.argv[4])
+    else:
+        # Match the old file + loop-count
+        code_loop_count = round(0x2460400 * 20 / file_code_len)
+else:
+    print('Expected no args or:')
+    print(f'  {sys.argv[0]} <code-offset> <code-len> <filename> [loop-count]')
+    sys.exit(1)
+
+if not os.path.exists(code_filename):
+    print(f'File `{code_filename}` does not exist')
+    sys.exit(1)
+if file_code_offs < 0:
+    print(f'Invalid code-offset {file_code_offs}')
+    sys.exit(1)
+if file_code_len < 0:
+    print(f'Invalid code-len {file_code_len}')
+    sys.exit(1)
+if code_loop_count < 0:
+    print(f'Invalid loop-count {code_loop_count}')
+    sys.exit(1)
+
 
 targets = [
     'bench/cs/bench-cs-fmt',
@@ -28,7 +64,7 @@ timings = []
 assert all(os.path.exists(x) for x in targets)
 
 # Open & read file once before to make sure it's in OS cache.
-with open('input/xul.dll', 'rb') as f:
+with open(code_filename, 'rb') as f:
     f.read()
 
 print('[*] Performing benchmarks')
@@ -38,13 +74,32 @@ for cur_target in targets:
     pwd = os.getcwd()
     os.chdir(os.path.dirname(cur_target))
 
+    process_args = [
+        os.path.join(root_dir, cur_target),
+        f'0x{code_loop_count:X}',
+        f'0x{file_code_offs:X}',
+        f'0x{file_code_len:X}',
+        code_filename
+    ]
     prev = time.time()
-    subprocess.run(['./' + os.path.basename(cur_target)])
+    process = subprocess.run(process_args, stdout=subprocess.PIPE)
     diff = time.time() - prev
-    timings.append(diff)
-
     os.chdir(pwd)
-    print('[+] Completed in {:.2f} seconds'.format(diff))
+    if process.returncode != 0:
+        raise ValueError(f'{cur_target} exited with code {process.returncode}')
+    output = process.stdout.decode('utf-8')
+    m = re.search('Disassembled (\d+) instructions \((\d+) valid, (\d+) bad\), (\S+) ms', output)
+    if m is None:
+        raise ValueError(f"Couldn't parse output: `{output}`")
+    groups = m.groups()
+    total_instrs = int(groups[0])
+    valid_instrs = int(groups[1])
+    bad_instrs = int(groups[2])
+    total_s = float(groups[3]) / 1000.0
+
+    print(output, end='')
+    timings.append(total_s)
+    print(f'[+] Completed in {total_s:.2f} ({diff:.2f}) seconds')
 
 
 print('[*] Generating chart')
