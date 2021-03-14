@@ -2,23 +2,23 @@
 #include <xed-interface.h>
 
 
-int main() 
+int main(int argc, char* argv[]) 
 {
     xed_tables_init();
 
-    uint8_t *xul_code = NULL;
-    size_t xul_code_len = 0;
-    if (!read_xul_dll(&xul_code, &xul_code_len))
+    uint8_t *code = NULL;
+    size_t code_len = 0, loop_count = 0;
+    if (!read_file(argc, argv, &code, &code_len, &loop_count))
     {
-        fputs("Can't read xul.dll\n", stderr);
         return 1;
     }
 
     size_t num_valid_insns = 0;
     size_t num_bad_insn = 0;
-    for (size_t round = 0; round < 20; ++round)
+    clock_t start_time = clock();
+    for (size_t round = 0; round < loop_count; ++round)
     {
-        for (size_t read_offs = 0; read_offs < xul_code_len; )
+        for (size_t read_offs = 0; read_offs < code_len; )
         {
             xed_decoded_inst_t insn;
             xed_decoded_inst_zero(&insn);
@@ -30,8 +30,8 @@ int main()
             
             if (xed_decode(
                 &insn, 
-                XED_STATIC_CAST(const xed_uint8_t*, xul_code + read_offs),
-                xul_code_len - read_offs
+                XED_STATIC_CAST(const xed_uint8_t*, code + read_offs),
+                code_len - read_offs
             ))
             {
                 ++read_offs;
@@ -57,12 +57,14 @@ int main()
             }
         }
     }
-    
+    clock_t end_time = clock();
+
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad)\n", 
+        "Disassembled %zu instructions (%zu valid, %zu bad), %.2f ms\n", 
         num_valid_insns + num_bad_insn,
         num_valid_insns,
-        num_bad_insn
+        num_bad_insn,
+        (double)(end_time - start_time) * 1000.0 / CLOCKS_PER_SEC
     );
     
     return 0;

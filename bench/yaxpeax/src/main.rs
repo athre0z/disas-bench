@@ -7,27 +7,40 @@ use yaxpeax_arch::{Decoder, LengthedInstruction};
 use yaxpeax_x86::long_mode as amd64;
 use yaxpeax_x86::long_mode::Arch;
 
-// translated from `load_bin.inc`
-
-const XUL_TEXT_OFFS: u64 = 0x400;
-const XUL_TEXT_LEN: usize = 0x2460400;
-
-fn read_xul_dll() -> std::io::Result<Box<[u8]>> {
-    let mut f = File::open("../../input/xul.dll")?;
-    f.seek(SeekFrom::Start(XUL_TEXT_OFFS))?;
-    let mut code = vec![0; XUL_TEXT_LEN];
-    f.read_exact(&mut code)?;
-    Ok(code.into_boxed_slice())
+#[allow(clippy::manual_strip)]
+fn parse_int(s: &str) -> Result<usize, String> {
+    if s.starts_with("0x") {
+        usize::from_str_radix(&s[2..], 16)
+    } else {
+        s.parse()
+    }
+    .map_err(|_| format!("Failed to parse {}", s))
 }
 
-pub fn main() {
-    let xul_code = match read_xul_dll() {
-        Ok(code) => code,
-        Err(_) => {
-            eprintln!("Can't read xul.dll");
-            return;
-        }
-    };
+fn read_file() -> Result<(Box<[u8]>, usize), String> {
+    let args: Vec<_> = std::env::args().skip(1).collect();
+    if args.len() != 4 {
+        return Err("Expected args: <loop-count> <code-offset> <code-len> <filename>".into());
+    }
+    let loop_count: usize =
+        parse_int(&args[0]).map_err(|e| format!("Couldn't parse loop-count: {}", e))?;
+    let file_offset: u64 =
+        parse_int(&args[1]).map_err(|e| format!("Couldn't parse code-offset: {}", e))? as u64;
+    let bin_len: usize =
+        parse_int(&args[2]).map_err(|e| format!("Couldn't parse code-len: {}", e))?;
+    let filename: &str = &args[3];
+
+    let mut f = File::open(filename).map_err(|e| format!("Couldn't open {}, {}", filename, e))?;
+    f.seek(SeekFrom::Start(file_offset))
+        .map_err(|e| format!("Couldn't seek: {}", e))?;
+    let mut code = vec![0; bin_len];
+    f.read_exact(&mut code)
+        .map_err(|e| format!("Couldn't read {} bytes, {}", bin_len, e))?;
+    Ok((code.into_boxed_slice(), loop_count))
+}
+
+pub fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let (code, loop_count) = read_file()?;
 
     let decoder = <Arch as yaxpeax_arch::Arch>::Decoder::default();
 
@@ -38,13 +51,11 @@ pub fn main() {
 
     let mut num_valid_insns: usize = 0;
     let mut num_bad_insns: usize = 0;
-    for _ in 0..20 {
+    let time = std::time::SystemTime::now();
+    for _ in 0..loop_count {
         let mut offset = 0u64;
-        while offset < XUL_TEXT_LEN as u64 {
-            match decoder.decode_into(
-                &mut instruction,
-                xul_code[(offset as usize)..].iter().cloned(),
-            ) {
+        while offset < code.len() as u64 {
+            match decoder.decode_into(&mut instruction, code[(offset as usize)..].iter().cloned()) {
                 Ok(()) => {
                     #[cfg(feature = "formatter")]
                     {
@@ -65,11 +76,13 @@ pub fn main() {
             }
         }
     }
-
+    let elapsed = time.elapsed().unwrap();
     println!(
-        "Disassembled {} instructions ({} valid, {} bad)",
+        "Disassembled {} instructions ({} valid, {} bad), {} ms",
         num_valid_insns + num_bad_insns,
         num_valid_insns,
         num_bad_insns,
+        elapsed.as_millis(),
     );
+    Ok(())
 }
