@@ -44,24 +44,27 @@ if code_loop_count < 0:
 
 
 targets = [
-    'bench/cs/bench-cs-fmt',
-    'bench/zydis/bench-zydis-min-no-fmt',
-    'bench/zydis/bench-zydis-full-no-fmt',
-    'bench/zydis/bench-zydis-full-fmt',
-    'bench/xed/bench-xed-fmt',
-    'bench/xed/bench-xed-no-fmt',
-    'bench/distorm/bench-distorm-fmt',
-    'bench/distorm/bench-distorm-no-fmt',
-    'bench/iced-x86/bench-iced-fmt',
-    'bench/iced-x86/bench-iced-no-fmt',
-    'bench/bddisasm/bench-bddisasm-fmt',
-    'bench/bddisasm/bench-bddisasm-no-fmt',
-    'bench/yaxpeax/bench-yaxpeax-fmt',
-    'bench/yaxpeax/bench-yaxpeax-no-fmt',
+    # Decode + format
+    ['bench/cs/bench-cs-fmt', 'Capstone decode+fmt'],
+    ['bench/zydis/bench-zydis-full-fmt', 'Zydis (full) decode+fmt'],
+    ['bench/xed/bench-xed-fmt', 'XED decode+fmt'],
+    ['bench/distorm/bench-distorm-fmt', 'diStorm decode+fmt'],
+    ['bench/iced-x86/bench-iced-fmt', 'iced decode+fmt'],
+    ['bench/bddisasm/bench-bddisasm-fmt', 'bddisasm decode+fmt'],
+    ['bench/yaxpeax/bench-yaxpeax-fmt', 'yaxpeax decode+fmt'],
+
+    # Decode only
+    ['bench/zydis/bench-zydis-min-no-fmt', 'Zydis (min) decode'],
+    ['bench/zydis/bench-zydis-full-no-fmt', 'Zydis (full) decode'],
+    ['bench/xed/bench-xed-no-fmt', 'XED decode'],
+    ['bench/distorm/bench-distorm-no-fmt', 'diStorm decode'],
+    ['bench/iced-x86/bench-iced-no-fmt', 'iced decode'],
+    ['bench/bddisasm/bench-bddisasm-no-fmt', 'bddisasm decode'],
+    ['bench/yaxpeax/bench-yaxpeax-no-fmt', 'yaxpeax decode'],
 ]
 timings = []
 
-assert all(os.path.exists(x) for x in targets)
+assert all(os.path.exists(x[0]) for x in targets)
 
 # Open & read file once before to make sure it's in OS cache.
 with open(code_filename, 'rb') as f:
@@ -70,12 +73,12 @@ with open(code_filename, 'rb') as f:
 print('[*] Performing benchmarks')
 
 for cur_target in targets:
-    print('[*] Benchmarking {} ...'.format(cur_target))    
+    print(f'[*] Benchmarking {cur_target[0]} ...')
     pwd = os.getcwd()
-    os.chdir(os.path.dirname(cur_target))
+    os.chdir(os.path.dirname(cur_target[0]))
 
     process_args = [
-        os.path.join(root_dir, cur_target),
+        os.path.join(root_dir, cur_target[0]),
         f'0x{code_loop_count:X}',
         f'0x{file_code_offs:X}',
         f'0x{file_code_len:X}',
@@ -86,7 +89,7 @@ for cur_target in targets:
     diff = time.time() - prev
     os.chdir(pwd)
     if process.returncode != 0:
-        raise ValueError(f'{cur_target} exited with code {process.returncode}')
+        raise ValueError(f'{cur_target[0]} exited with code {process.returncode}')
     output = process.stdout.decode('utf-8')
     m = re.search('Disassembled (\d+) instructions \((\d+) valid, (\d+) bad\), (\S+) ms', output)
     if m is None:
@@ -110,7 +113,7 @@ plt.rcdefaults()
 fig = plt.figure(figsize=(10, 5))
 ax = fig.add_subplot(1, 1, 1)
 
-libs = [os.path.basename(x) for x in targets]
+libs = [os.path.basename(x[1]) for x in targets]
 y_pos = np.arange(len(libs))
 best = mbs.index(max(mbs))
 
