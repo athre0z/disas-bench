@@ -71,7 +71,7 @@ The optional `bench.py` arguments are:
 
 - `<code-offset>` = offset of the code section (in decimal or 0x hex)
 - `<code-len>` = length of the code section (in decimal or 0x hex)
-- `<filename>` = binary file to decode and format
+- `<filename>` = 64-bit x86 binary file to decode and format
 - `[loop-count]` = optional loop count. Total number of bytes decoded and formatted is `<code-len> * [loop-count]`
 
 ## Contributing
