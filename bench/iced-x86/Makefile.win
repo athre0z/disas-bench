@@ -1,0 +1,9 @@
+make-bench-iced-x86:
+	cargo build --release --features formatter
+	cp target/release/iced-bench bench-iced-fmt
+	cargo build --release --features decoder
+	cp target/release/iced-bench bench-iced-no-fmt
+
+clean:
+	cargo clean
+	rm -f bench-iced-fmt.exe bench-iced-no-fmt.exe

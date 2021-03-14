@@ -42,11 +42,24 @@ Decoding: Parsing the raw instruction bytes into a machine processable structure
 Formatting: Translating the structure to human readable assembly
 
 ## Benchmarking
+
+Windows:
+
+```cmd
+REM Start "x64 Native Tools Command Prompt for VS 2019"
+REM Start git bash:
+"C:\Program Files\Git\bin\bash.exe"
+```
+
+Windows/Linux/macOS:
+
 ```bash
 git clone --recursive 'https://github.com/athre0z/disas-bench.git'
 cd disas-bench.git
 ./make-all.sh
+# Windows: python
 python3 -mvenv venv
+# Windows: source venv/Scripts/activate
 source venv/bin/activate
 pip install -r requirements.txt
 # Optional args: <code-offset> <code-len> <filename> [loop-count]
