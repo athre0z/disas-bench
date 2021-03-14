@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import os
+import platform
 import sys
 import re
 
@@ -63,6 +64,10 @@ targets = [
     ['bench/yaxpeax/bench-yaxpeax-no-fmt', 'yaxpeax decode'],
 ]
 timings = []
+
+if platform.system() == 'Windows':
+    for x in targets:
+        x[0] = x[0].replace('/', '\\') + '.exe'
 
 assert all(os.path.exists(x[0]) for x in targets)
 

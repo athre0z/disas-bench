@@ -1,0 +1,6 @@
+make-bench-bddisasm:
+	cl main.c -O2 -Fe:bench-bddisasm-fmt -I../../libs/bddisasm/inc ../../libs/bddisasm/bddisasm/bin/x64/Release/bddisasm.lib
+	cl main.c -O2 -Fe:bench-bddisasm-no-fmt -DDISAS_BENCH_NO_FORMAT -I../../libs/bddisasm/inc ../../libs/bddisasm/bddisasm/bin/x64/Release/bddisasm.lib
+
+clean:
+	rm -f bench-bddisasm-fmt.exe bench-bddisasm-no-fmt.exe *.obj

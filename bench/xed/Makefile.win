@@ -1,0 +1,6 @@
+make-bench-xed:
+	cl main.c -O2 -Fe:bench-xed-fmt -I../../libs/intelxed/include/public/xed -I../../libs/intelxed/obj ../../libs/intelxed/obj/xed.lib
+	cl main.c -O2 -Fe:bench-xed-no-fmt -DDISAS_BENCH_NO_FORMAT -I../../libs/intelxed/include/public/xed -I../../libs/intelxed/obj ../../libs/intelxed/obj/xed.lib
+
+clean:
+	rm -f bench-xed* *.obj

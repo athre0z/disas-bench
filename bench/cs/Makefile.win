@@ -1,0 +1,5 @@
+make-bench-cs:
+	cl main.c -O2 -Fe:bench-cs-fmt -I../../libs/capstone/include ../../libs/capstone/build/capstone.lib
+
+clean:
+	rm -f bench-cs* *.obj
