@@ -100,9 +100,6 @@ for cur_target in targets:
     if m is None:
         raise ValueError(f"Couldn't parse output: `{output}`")
     groups = m.groups()
-    total_instrs = int(groups[0])
-    valid_instrs = int(groups[1])
-    bad_instrs = int(groups[2])
     total_s = float(groups[3]) / 1000.0
 
     print(output, end='')

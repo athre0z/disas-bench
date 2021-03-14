@@ -32,7 +32,7 @@ else
     fi
     if [[ $(which python3) ]]; then
         python=python3
-    elif [[ ! `which $(python)` ]]; then
+    elif [[ ! `which $python` ]]; then
         echo "[-] Unable to find Python, is it installed?" 1>&2
         exit 1
     fi
