@@ -7,12 +7,6 @@ This repository holds benchmarking code for various x86/x86-64 disassembler libr
 ![Bench](bench.png)
 linux 5.4.72 (WSL2), GCC 8.4.0, Rust 1.50.0, i5-6600K
 
-![Bench](https://i.imgur.com/PumBJjJ.png)
-macOS 10.13, GCC 7, i7-6850k
-
-![Bench](https://i.imgur.com/gCUzomq.png)
-macOS 10.13, Apple Clang 900, i7-6850k
-
 ## Candidates
 
 [Capstone](https://github.com/aquynh/capstone)
@@ -28,18 +22,6 @@ macOS 10.13, Apple Clang 900, i7-6850k
 [bddisasm](https://github.com/bitdefender/bddisasm)
 
 [yaxpeax-x86](https://github.com/iximeow/yaxpeax-x86)
-
-## Suffixes
-
-| Suffix    | Explaination |
-| --------- | ------------ |
-| `-no-fmt` | Decoding only |
-| `-fmt`    | Decoding + formatting |
-| `-min`/`-full` | Zydis specific: `ZYDIS_DECODE_GRANULARITY_(MINIMAL/FULL)` argument |
-
-Decoding: Parsing the raw instruction bytes into a machine processable structure
-
-Formatting: Translating the structure to human readable assembly
 
 ## Benchmarking
 
