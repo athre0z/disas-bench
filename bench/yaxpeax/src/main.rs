@@ -3,9 +3,9 @@ use std::io::Read;
 use std::io::Seek;
 use std::io::SeekFrom;
 
-use yaxpeax_arch::{Decoder, LengthedInstruction};
+use yaxpeax_arch::{Decoder, Reader};
 use yaxpeax_x86::long_mode as amd64;
-use yaxpeax_x86::long_mode::Arch;
+use yaxpeax_x86::long_mode::{Arch, DecodeError};
 
 #[allow(clippy::manual_strip)]
 fn parse_int(s: &str) -> Result<usize, String> {
@@ -54,8 +54,9 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::SystemTime::now();
     for _ in 0..loop_count {
         let mut offset = 0u64;
-        while offset < code.len() as u64 {
-            match decoder.decode_into(&mut instruction, code[(offset as usize)..].iter().cloned()) {
+        let mut reader = yaxpeax_arch::U8Reader::new(&code[(offset as usize)..]);
+        loop {
+            match decoder.decode_into(&mut instruction, &mut reader) {
                 Ok(()) => {
                     #[cfg(feature = "formatter")]
                     {
@@ -66,12 +67,16 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
 
                     num_valid_insns += 1;
-                    offset += instruction.len();
+                }
+                Err(DecodeError::ExhaustedInput) => {
+                    break;
                 }
                 Err(_) => {
                     num_bad_insns += 1;
                     // manually seek forward one byte to try again
-                    offset += 1;
+                    let update: u64 = Reader::<u64, u8>::total_offset(&mut reader) - Reader::<u64, u8>::offset(&mut reader) + 1u64;
+                    offset += update;
+                    reader = yaxpeax_arch::U8Reader::new(&code[(offset as usize)..]);
                 }
             }
         }

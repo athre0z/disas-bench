@@ -16,8 +16,8 @@ lto = true
 
 [features]
 decoder = []
-formatter = []
+formatter = ["yaxpeax-x86/fmt"]
 
 [dependencies]
-yaxpeax-x86 = { path = "../../libs/yaxpeax", version = "*", default-features = false, features = ["std"] }
-yaxpeax-arch = { version = "*", default-features = false }
+yaxpeax-x86 = { path = "../../libs/yaxpeax", version = "1.0.0", default-features = false, features = ["std"] }
+yaxpeax-arch = { version = "0.2.0", default-features = false }
