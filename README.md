@@ -4,8 +4,12 @@ Disassembler Benchmark
 This repository holds benchmarking code for various x86/x86-64 disassembler libraries.
 
 ## Results
-![Bench](bench.png)
-linux 5.4.72 (WSL2), GCC 8.4.0, Rust 1.50.0, i5-6600K
+
+![Bench AMD](bench-ixi.png)
+Ubuntu 20.04, AMD Ryzen 9 3950X
+
+![Bench Intel](bench-ath.png)
+macOS 11.4, Intel i7 8700k
 
 ## Candidates
 
