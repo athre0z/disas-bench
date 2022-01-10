@@ -19,3 +19,6 @@
 [submodule "libs/mbuild"]
 	path = libs/mbuild
 	url = https://github.com/intelxed/mbuild.git
+[submodule "libs/sleigh"]
+	path = libs/sleigh
+	url = https://github.com/lifting-bits/sleigh.git
