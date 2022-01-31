@@ -66,8 +66,7 @@ int main(int argc, char *argv[])
     Element *sla_doc = storage.openDocument(*sla_path)->getRoot();
     storage.registerTag(sla_doc);
     Element *pspec_doc = storage.openDocument(
-        "bench/sleigh/_deps/ghidrasource-src/Ghidra/Processors/x86/data/languages/x86-64.pspec"
-        )->getRoot();
+        "_deps/ghidrasource-src/Ghidra/Processors/x86/data/languages/x86-64.pspec")->getRoot();
     storage.registerTag(pspec_doc);
     engine.initialize(storage);
     engine.allowContextSet(false);
