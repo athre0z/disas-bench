@@ -27,6 +27,8 @@ macOS 11.4, Intel i7 8700k
 
 [yaxpeax-x86](https://github.com/iximeow/yaxpeax-x86)
 
+[Sleigh](https://github.com/lifting-bits/sleigh)
+
 ## Benchmarking
 
 Windows:
