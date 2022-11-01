@@ -146,5 +146,16 @@ cd bench/yaxpeax
 $make
 cd ../..
 
-echo "[+] All done!"
+echo "[*] Building sleigh benchmark ..."
+cd bench/sleigh
+cmake -DCMAKE_BUILD_TYPE=Release .
+if [[ "$is_windows" == "y" ]]; then
+    msbuild.exe bench-sleigh.sln -p:Configuration=Release -p:Platform=x64
+    cp Release/*.exe .
+    cp sleigh/Release/Sleigh.dll .
+else
+    $make -j4
+fi
+cd ../..
 
+echo "[+] All done!"

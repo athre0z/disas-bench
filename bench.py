@@ -53,6 +53,7 @@ targets = [
     ['bench/iced-x86/bench-iced-fmt', 'iced decode+fmt'],
     ['bench/bddisasm/bench-bddisasm-fmt', 'bddisasm decode+fmt'],
     ['bench/yaxpeax/bench-yaxpeax-fmt', 'yaxpeax decode+fmt'],
+    ['bench/sleigh/bench-sleigh-fmt', 'sleigh decode+fmt'],
 
     # Decode only
     ['bench/zydis/bench-zydis-min-no-fmt', 'Zydis (min) decode'],
