@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     ZydisDecoderInit(
         &decoder,
         ZYDIS_MACHINE_MODE_LONG_64,
-        ZYDIS_ADDRESS_WIDTH_64
+        ZYDIS_STACK_WIDTH_64
     );
 
 #ifdef DISAS_BENCH_DECODE_MINIMAL
@@ -47,8 +47,10 @@ int main(int argc, char* argv[])
 
         ZyanStatus status;
         ZydisDecodedInstruction info;
-        while ((status = ZydisDecoderDecodeBuffer(
+        ZydisDecoderContext ctx;
+        while ((status = ZydisDecoderDecodeInstruction(
             &decoder,
+            &ctx,
             code + read_offs,
             code_len - read_offs,
             &info
@@ -61,11 +63,33 @@ int main(int argc, char* argv[])
                 continue;
             }
 
+#ifndef DISAS_BENCH_DECODE_MINIMAL
+            ZydisDecodedOperand ops[ZYDIS_MAX_OPERAND_COUNT_VISIBLE];
+            if (ZYAN_FAILED(ZydisDecoderDecodeOperands(
+                &decoder,
+                &ctx,
+                &info,
+                ops,
+                ZYDIS_MAX_OPERAND_COUNT_VISIBLE
+            ))) {
+                abort();
+            }
+#endif
+
 #ifndef DISAS_BENCH_NO_FORMAT
-            char printBuffer[256];
-            ZydisFormatterFormatInstruction(
-                &formatter, &info, printBuffer, sizeof(printBuffer), read_offs
-            );
+            char print_buffer[256];
+            if (ZYAN_FAILED(ZydisFormatterFormatInstruction(
+                &formatter, 
+                &info, 
+                ops,
+                ZYDIS_MAX_OPERAND_COUNT_VISIBLE,
+                print_buffer, 
+                sizeof(print_buffer), 
+                read_offs,
+                NULL
+            ))) {
+                abort();
+            }
 #endif
 
             read_offs += info.length;
