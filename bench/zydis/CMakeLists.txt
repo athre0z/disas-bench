@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(bench-zydis)
 
-set(ZYDIS_BUILD_SHARED_LIB ON CACHE BOOL "")
+set(ZYDIS_BUILD_SHARED_LIB OFF CACHE BOOL "")
 set(ZYDIS_BUILD_EXAMPLES OFF CACHE BOOL "")
 set(ZYDIS_BUILD_TOOLS OFF CACHE BOOL "")
 add_subdirectory("../../libs/zydis" "zydis")
