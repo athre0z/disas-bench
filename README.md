@@ -5,11 +5,8 @@ This repository holds benchmarking code for various x86/x86-64 disassembler libr
 
 ## Results
 
-![Bench AMD](bench-ixi.png)
-Ubuntu 20.04, AMD Ryzen 9 3950X
-
 ![Bench Intel](bench-ath.png)
-macOS 11.4, Intel i7 8700k
+NixOS, Linux 6.0.10, GCC 11, rustc 1.67.0-nightly, i7-12700K
 
 ## Candidates
 
