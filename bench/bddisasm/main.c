@@ -1,7 +1,6 @@
 #include <string.h>
 #include "../load_bin.inc"
 
-#include "disasmtypes.h"
 #include "bddisasm.h"
 
 int nd_vsnprintf_s(char *buffer, size_t sizeOfBuffer, size_t count, const char *format, va_list argptr)
@@ -60,12 +59,12 @@ int main(int argc, char* argv[])
     clock_t end_time = clock();
 
     printf(
-        "Disassembled %zu instructions (%zu valid, %zu bad), %.2f ms\n", 
+        "Disassembled %zu instructions (%zu valid, %zu bad), %.2f ms\n",
         num_valid_insns + num_bad_insn,
         num_valid_insns,
         num_bad_insn,
         (double)(end_time - start_time) * 1000.0 / CLOCKS_PER_SEC
     );
-    
+
     return 0;
 }
