@@ -6,6 +6,8 @@ use std::io::SeekFrom;
 use yaxpeax_arch::{Decoder, Reader};
 use yaxpeax_x86::long_mode as amd64;
 use yaxpeax_x86::long_mode::{Arch, DecodeError};
+#[cfg(feature = "formatter")]
+use yaxpeax_x86::long_mode::DisplayStyle;
 
 #[allow(clippy::manual_strip)]
 fn parse_int(s: &str) -> Result<usize, String> {
@@ -45,7 +47,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let decoder = <Arch as yaxpeax_arch::Arch>::Decoder::default();
 
     #[cfg(feature = "formatter")]
-    let mut text = String::new();
+    let mut buf = yaxpeax_x86::long_mode::InstructionTextBuffer::new();
 
     let mut instruction = amd64::Instruction::default();
 
@@ -60,9 +62,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
                 Ok(()) => {
                     #[cfg(feature = "formatter")]
                     {
-                        text.clear();
-                        instruction
-                            .write_to(&mut text)
+                        buf.format_inst(&instruction.display_with(DisplayStyle::Intel))
                             .expect("can format successfully");
                     }
 
