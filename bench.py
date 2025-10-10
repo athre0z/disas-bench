@@ -52,6 +52,7 @@ targets = [
     ['bench/distorm/bench-distorm-fmt', 'diStorm decode+fmt'],
     ['bench/iced-x86/bench-iced-fmt', 'iced decode+fmt'],
     ['bench/bddisasm/bench-bddisasm-fmt', 'bddisasm decode+fmt'],
+    ['bench/bddisasm/bench-bddisasm-mini-fmt', 'bddisasm mini decode+fmt'],
     ['bench/yaxpeax/bench-yaxpeax-fmt', 'yaxpeax decode+fmt'],
     ['bench/sleigh/bench-sleigh-fmt', 'sleigh decode+fmt'],
 
@@ -62,6 +63,7 @@ targets = [
     ['bench/distorm/bench-distorm-no-fmt', 'diStorm decode'],
     ['bench/iced-x86/bench-iced-no-fmt', 'iced decode'],
     ['bench/bddisasm/bench-bddisasm-no-fmt', 'bddisasm decode'],
+    ['bench/bddisasm/bench-bddisasm-mini-no-fmt', 'bddisasm mini decode'],
     ['bench/yaxpeax/bench-yaxpeax-no-fmt', 'yaxpeax decode'],
 ]
 timings = []

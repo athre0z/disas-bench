@@ -3,20 +3,14 @@
 
 #include "bddisasm.h"
 
-int nd_vsnprintf_s(char *buffer, size_t sizeOfBuffer, size_t count, const char *format, va_list argptr)
-{
-    return vsnprintf(buffer, sizeOfBuffer, format, argptr);
-}
-
-void *
-nd_memset(void *s, int c, size_t n)
-{
-    return memset(s, c, n);
-}
+#ifdef DISASM_BENCH_USE_BDD_MINI
+#define FmtFunc NdToTextMini
+#else
+#define FmtFunc NdToText
+#endif
 
 int main(int argc, char* argv[])
 {
-    INSTRUX ix;
     NDSTATUS status;
     char text[ND_MIN_BUF_SIZE];
 
@@ -34,6 +28,16 @@ int main(int argc, char* argv[])
     {
         for (size_t read_offs = 0; read_offs < code_len; )
         {
+#ifdef DISASM_BENCH_USE_BDD_MINI
+            INSTRUX_MINI ix;
+            status = NdDecodeMini(
+                &ix,
+                code + read_offs,
+                code_len - read_offs,
+                ND_CODE_64
+            );
+#else
+            INSTRUX ix;
             status = NdDecodeEx(
                 &ix,
                 code + read_offs,
@@ -41,6 +45,7 @@ int main(int argc, char* argv[])
                 ND_CODE_64,
                 ND_DATA_64
             );
+#endif
             if (!ND_SUCCESS(status)) {
                 ++read_offs;
                 ++num_bad_insn;
@@ -48,7 +53,7 @@ int main(int argc, char* argv[])
             else
             {
 #ifndef DISAS_BENCH_NO_FORMAT
-                NdToText(&ix, 0, sizeof(text), text);
+                FmtFunc(&ix, 0, sizeof(text), text);
 #endif
 
                 read_offs += ix.Length;

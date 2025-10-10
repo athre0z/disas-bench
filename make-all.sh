@@ -95,11 +95,8 @@ fi
 
 echo "[*] Building bddisasm ..."
 cd libs/bddisasm
-if [[ "$is_windows" == "y" ]]; then
-    msbuild.exe bddisasm/bddisasm.vcxproj -p:Configuration=Release -p:Platform=x64
-else
-    $make
-fi
+cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DBDD_INCLUDE_TOOL=OFF -DBDD_INCLUDE_ISAGENERATOR_X86=OFF -DBDD_LTO=ON
+cmake --build build --target bddisasm
 cd ../..
 
 # Build benchmark tools
