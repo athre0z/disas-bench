@@ -32,5 +32,6 @@ jobs:
       run: ./make-all.sh
     - name: bench
       run: |
+        python3 pip install -r requirements.txt
         python3 bench.py
         mv bench.png bench-ath.png
