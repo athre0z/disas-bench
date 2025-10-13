@@ -2,7 +2,7 @@ name: Update benchmarks
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, ghactions ]
     paths-ignore:
       - '*.md'
       - 'LICENSE'
