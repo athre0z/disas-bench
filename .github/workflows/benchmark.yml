@@ -10,15 +10,16 @@ on:
 
 jobs:
   Update-benchmarks:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-
+    concurrency:
+      group: update-benchmarks-${{ github.ref_name }}
+      # Without this we risk trying to push a `bench-ath.png` after
+      # a new commit was made. Not only isn't that very helpful since
+      # it will be promptly overwritten, it will also fail in the way
+      # we currently push the changes.
+      cancel-in-progress: true
     permissions:
       contents: write
-
     steps:
     - uses: actions/checkout@v5
       with:
@@ -35,3 +36,11 @@ jobs:
         python3 -m pip install -r requirements.txt
         python3 bench.py
         mv bench.png bench-ath.png
+    - name: push changes
+      run: |
+        if ! git diff --quiet bench-ath.png; then
+          git add bench-ath.png
+          git commit -m "[AUTO] Update bench-ath.png"
+          git push
+        fi
+    
