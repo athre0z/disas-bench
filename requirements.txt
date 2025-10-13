@@ -1,2 +1,2 @@
 wheel
-matplotlib==3.3.4
+matplotlib==3.10.7
