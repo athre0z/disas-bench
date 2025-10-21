@@ -1,2 +1,4 @@
 bench-bddisasm-fmt
 bench-bddisasm-no-fmt
+bench-bddisasm-mini-fmt
+bench-bddisasm-mini-no-fmt

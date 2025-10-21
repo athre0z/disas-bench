@@ -1,6 +1,19 @@
+CC := cc
+CFLAGS := -O3 -I../../libs/bddisasm/inc
+LDFLAGS := -L../../libs/bddisasm/build -lbddisasm
+
 make-bench-bddisasm:
-	cc main.c -O3 -o bench-bddisasm-fmt -I../../libs/bddisasm/inc -L../../libs/bddisasm/bin/x64/Release -lbddisasm
-	cc main.c -O3 -o bench-bddisasm-no-fmt -DDISAS_BENCH_NO_FORMAT -I../../libs/bddisasm/inc -L../../libs/bddisasm/bin/x64/Release -lbddisasm
+	$(CC) main.c $(CFLAGS) $(LDFLAGS) \
+	    -o bench-bddisasm-fmt
+	$(CC) main.c $(CFLAGS) $(LDFLAGS) \
+	    -DDISAS_BENCH_NO_FORMAT \
+	    -o bench-bddisasm-no-fmt
+	$(CC) main.c $(CFLAGS) $(LDFLAGS) \
+	    -DDISASM_BENCH_USE_BDD_MINI \
+	    -o bench-bddisasm-mini-fmt
+	$(CC) main.c $(CFLAGS) $(LDFLAGS) \
+	    -DDISASM_BENCH_USE_BDD_MINI -DDISAS_BENCH_NO_FORMAT \
+	    -o bench-bddisasm-mini-no-fmt
 
 clean:
-	rm -f bench-bddisasm-fmt bench-bddisasm-no-fmt
+	rm -f bench-bddisasm-fmt bench-bddisasm-no-fmt bench-bddisasm-mini-fmt bench-bddisasm-mini-no-fmt
