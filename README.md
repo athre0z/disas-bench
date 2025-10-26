@@ -5,8 +5,11 @@ This repository holds benchmarking code for various x86/x86-64 disassembler libr
 
 ## Results
 
-![Bench Intel](bench-ath.png)
-NixOS, Linux 6.0.10, GCC 11, rustc 1.67.0-nightly, i7-12700K
+![Bench AMD](bench-amd.png)
+Ubuntu 24.04, Linux 6.8.0, GCC 13.3, rustc 1.88.0, Ryzen 9 9950X
+
+![Bench Intel](bench-intel.png)
+Debian Testing (trixie), Linux 6.12.48, GCC 14.2, rustc 1.90.0, i9-13900K
 
 ## Candidates
 
