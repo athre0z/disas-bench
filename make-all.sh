@@ -143,6 +143,11 @@ cd bench/yaxpeax
 $make
 cd ../..
 
+echo "[*] Building yaxpeax-arm benchmark ..."
+cd bench/armv7/yaxpeax-arm
+$make
+cd ../../..
+
 echo "[*] Building sleigh benchmark ..."
 cd bench/sleigh
 cmake -DCMAKE_BUILD_TYPE=Release .
